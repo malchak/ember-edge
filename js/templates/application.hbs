@@ -1,0 +1,19 @@
+<div id="wrap">
+	<header class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				{{#link-to 'index' class="navbar-brand"}}EmberTrackr{{/link-to}}
+			</div>	
+		</div>
+	</header>
+	<div role="main" class="container">
+		{{outlet}}
+	</div>
+</div>
+
+
+<footer>
+	<div class="container">
+		<p>Copyright &copy; {{currentYear}} Ember Trackr Inc.</p>
+	</div>
+</footer>
