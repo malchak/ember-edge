@@ -43,7 +43,32 @@ test('editing ticket details', function(){
 
 		ok(find('.panel-body:contains("New description")').length,
 			'expected description to update');
+	});
+});
 
+test('creating a ticket', function(){
+	visit('/tickets')
+	.click('a:contains("New Ticket")')
+	.fillIn('[name="title"]', 'My New Ticket')
+	.fillIn('[name="status"]', 'Open')
+	.fillIn('[name="description"]', 'Foo bar baz.')
+	.click('button:contains("Save")')
+	.then(function(){
+		ok(find('.list-group-item:contains("My New Ticket")').length,
+			'expected new ticket to appear in master list');
+		ok(find('.panel-title:contains("My New Ticket")').length,
+			'expected to see ticket in details view');
+		ok(find('.panel-title:contains("Open")').length, 
+			'expected ticket status to be "Open"');
+	});
+});
+
+test('canceling ticket creation', function(){
+	visit('tickets/new')
+	.click('button:contains("Canel")')
+	.then(function(){
+		equal(find('[name="title"]').length, 0,
+			'expected not to find title field'
 	});
 });
 

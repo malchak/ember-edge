@@ -1,0 +1,16 @@
+<div class="panel-heading">
+	<h3 class="panel-title">
+		<div class="row">
+			<div class="col-md-9">
+				{{input value=title name="title" class="form-control" placeholder="Title" autofocus=true}}
+			</div>
+			<div class="col-md-3">
+				{{view Ember.Select selectionBinding="status" contentBinding="statuses" name="status" class="pull-right form-control"}}
+			</div>
+		</div>
+	</h3>
+</div>
+<div class="panel-body">
+	{{textarea rows="12" value=description name="description" class="form-control" placeholder="Description"}}
+</div>
+
