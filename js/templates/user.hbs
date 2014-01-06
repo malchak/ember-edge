@@ -1,4 +1,7 @@
 <div class="panel panel-primary">
+	{{#if isEditing}}
+		{{partial "users/_form"}}
+	{{else}}
 	<div class="panel-heading">
 		<h3 class="panel-title">
 			{{displayName}}
@@ -14,5 +17,13 @@
 				{{/mail-to}}
 			</dd>
 		</dl>
+	</div>
+	{{/if}}
+	<div class="panel-footer">
+		{{#if isEditing}}
+		<button {{action "done"}} class="btn btn-default">Done</button>
+		{{else}}
+		<button {{action "edit"}} class="btn btn-default">Edit</button>
+		{{/if}}
 	</div>
 </div>
