@@ -13,4 +13,20 @@
 <div class="panel-body">
 	{{textarea rows="12" value=description name="description" class="form-control" placeholder="Description"}}
 </div>
+<div class="list-group">
+	<div class="list-group-item">
+		<div class="row">
+			<div class="col-md-6">
+				<h5>Reported by:</h5>
+				{{gravatar-image email=creator.email size=40 class="img-circle"}}
+				{{view Ember.Select valueBinding="creatorId" contentBinding="users" optionLabelPath="content.displayName" optionValuePath="content.id" prompt="Select a user..." name="creator"}}
+			</div>
+			<div class="col-md-6">
+				<h5>Assigned</h5>
+				{{gravatar-image email=assignee.email size=40 class="img-circle"}}
+				{{view Ember.Select valueBinding="assigneeId" contentBinding="users" optionLabelPath="content.displayName" optionValuePath="content.id" prompt="Select a user..." name="assignee"}}
+			</div>
+		</div>
+	</div>
+</div>
 

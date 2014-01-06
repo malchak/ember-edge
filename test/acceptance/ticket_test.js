@@ -29,6 +29,7 @@ test('editing ticket details', function(){
 	.fillIn('input[name="title"]', 'Foo Bar')
 	.fillIn('select[name="status"]', 'Open')
 	.fillIn('textarea[name="description"]', 'New description')
+	.fillIn('select[name="assignee"]', '1')
 	.click('button:contains("Done")')
 	.then(function(){
 		ok(find('.list-group-item:contains("Foo Bar")').length,
@@ -43,6 +44,9 @@ test('editing ticket details', function(){
 
 		ok(find('.panel-body:contains("New description")').length,
 			'expected description to update');
+
+		ok(find('a:contains("Yehuda Katz")').length === 2,
+			'expected Yehuda to be creator and assignee');
 	});
 });
 
@@ -71,6 +75,26 @@ test('canceling ticket creation', function(){
 			'expected not to find title field'
 	});
 });
+
+test('view ticket details', function(){
+	visit('/')
+	.click('a:contains("Tickets")')
+	.click('a:contains("Ticket 1")')
+	.then(function(){
+		ok(find('*.contains("This is ticket 1")').length,
+			'expected to find ticket description');
+		ok(find('a:contains("Yehuda Katz")').length,
+			'expected to find ticket creator');
+		ok(find('a:contains("Tom Dale")').length,
+			'expected to find ticket assignee');
+	});
+});
+
+
+
+
+
+
 
 
 
