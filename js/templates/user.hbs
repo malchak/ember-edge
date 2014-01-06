@@ -5,6 +5,14 @@
 		</h3>
 	</div>
 	<div class="panel-body">
-		<img {{bind-attr src="gravatarURL" alt="displayName"}}>
+		{{gravatar-image email=email alt=displayNAme size=200}}
+		<dl>
+			<dt>Email</dt>
+			<dd>
+				{{#mail-to email=email}}
+					{{email}}
+				{{/mail-to}}
+			</dd>
+		</dl>
 	</div>
 </div>
