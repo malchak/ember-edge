@@ -19,7 +19,7 @@ var GravatarImageComponent = Ember.Component.extend({
 module.exports = GravatarImageComponent;
 
 
-},{"../vendor/md5":22}],2:[function(require,module,exports){
+},{"../vendor/md5":23}],2:[function(require,module,exports){
 var MailToComponent = Ember.Component.extend({
 	tagName: 'a',
 	attributeBindings: ['href'],
@@ -49,7 +49,7 @@ App.ApplicationAdapter = DS.FixtureAdapter;
 module.exports = App;
 
 
-},{"../vendor/ember":19,"../vendor/ember-data":18,"../vendor/handlebars":20,"../vendor/jquery":21}],4:[function(require,module,exports){
+},{"../vendor/ember":20,"../vendor/ember-data":19,"../vendor/handlebars":21,"../vendor/jquery":22}],4:[function(require,module,exports){
 var App = require('./app');
 
 App.Router.map(function() {
@@ -59,6 +59,7 @@ App.Router.map(function() {
 	});
 	this.resource('users', function(){
 		this.resource('user', {path: '/:user_id'});
+		this.route('new');
 	});
 });
 
@@ -118,6 +119,7 @@ App.TicketRoute = require('./routes/ticket_route');
 App.TicketsRoute = require('./routes/tickets_route');
 App.UserRoute = require('./routes/user_route');
 App.UsersRoute = require('./routes/users_route');
+App.UsersNewRoute = require('./routes/users/new_route');
 App.TicketsNewRoute = require('./routes/tickets/new_route');
 App.ApplicationView = require('./views/application_view');
 App.TextField = require('./views/text_field');
@@ -127,7 +129,7 @@ require('./config/routes');
 module.exports = App;
 
 
-},{"./components/gravatar_image_component":1,"./components/mail_to_component":2,"./config/app":3,"./config/routes":4,"./controllers/application_controller":5,"./controllers/ticket_controller":6,"./controllers/tickets/new_controller":7,"./controllers/user_controller":8,"./models/ticket":10,"./models/user":11,"./routes/ticket_route":12,"./routes/tickets/new_route":13,"./routes/tickets_route":14,"./routes/user_route":15,"./routes/users_route":16,"./templates":17,"./views/application_view":23,"./views/text_field":24}],10:[function(require,module,exports){
+},{"./components/gravatar_image_component":1,"./components/mail_to_component":2,"./config/app":3,"./config/routes":4,"./controllers/application_controller":5,"./controllers/ticket_controller":6,"./controllers/tickets/new_controller":7,"./controllers/user_controller":8,"./models/ticket":10,"./models/user":11,"./routes/ticket_route":12,"./routes/tickets/new_route":13,"./routes/tickets_route":14,"./routes/user_route":15,"./routes/users/new_route":16,"./routes/users_route":17,"./templates":18,"./views/application_view":24,"./views/text_field":25}],10:[function(require,module,exports){
 var Ticket = DS.Model.extend({
 	title: DS.attr('string'),
 	description: DS.attr('string'),
@@ -187,7 +189,7 @@ User.FIXTURES = [
 module.exports = User;
 
 
-},{"../vendor/md5":22}],12:[function(require,module,exports){
+},{"../vendor/md5":23}],12:[function(require,module,exports){
 var TicketRoute = Ember.Route.extend({
 	actions: {
 		edit: function(){
@@ -251,6 +253,27 @@ module.exports = UserRoute;
 
 
 },{}],16:[function(require,module,exports){
+var UsersNewRoute = Ember.Route.extend({
+	model: function(){
+		return {};
+	},
+	actions: {
+		save: function(){
+			var attrs = this.get('controller').getProperties('firstName', 'lastName', 'email');
+			var user = this.get('store').createRecord('user', attrs);
+			var promise = user.save();
+			this.transitionTo('user', promise);
+		},
+		cancel: function(){
+			this.transitionTo('users');
+		} 
+	}
+});
+
+module.exports = UsersNewRoute;
+
+
+},{}],17:[function(require,module,exports){
 var UsersRoute = Ember.Route.extend({
 	model: function(){
 		return this.get('store').findAll('user');
@@ -260,7 +283,7 @@ var UsersRoute = Ember.Route.extend({
 module.exports = UsersRoute;
 
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 
 Ember.TEMPLATES['application'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
@@ -548,7 +571,7 @@ function program8(depth0,data) {
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "edit", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(" class=\"btn btn-default\">Edit</button>\n		");
+  data.buffer.push(" class=\"btn btn-primary\">Edit</button>\n		");
   return buffer;
   }
 
@@ -570,7 +593,7 @@ function program8(depth0,data) {
 Ember.TEMPLATES['users'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashTypes, hashContexts, escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
+  var buffer = '', stack1, stack2, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
 function program1(depth0,data) {
   
@@ -594,12 +617,26 @@ function program2(depth0,data) {
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "displayName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   }
 
+function program4(depth0,data) {
+  
+  
+  data.buffer.push("New User");
+  }
+
   data.buffer.push("<div class=\"row\">\n	<div class=\"col-md-4\">\n		<nav class=\"list-group\">\n			");
   hashTypes = {};
   hashContexts = {};
   stack1 = helpers.each.call(depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n		</nav>\n	</div>\n	<div class=\"col-md-8\">\n		");
+  data.buffer.push("\n		</nav>\n		");
+  hashContexts = {'class': depth0};
+  hashTypes = {'class': "STRING"};
+  options = {hash:{
+    'class': ("btn btn-primary btn-block")
+  },inverse:self.noop,fn:self.program(4, program4, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "users.new", options) : helperMissing.call(depth0, "link-to", "users.new", options));
+  if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
+  data.buffer.push("\n	</div>\n	<div class=\"col-md-8\">\n		");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "outlet", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -655,6 +692,30 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
   data.buffer.push("\n		</dd>\n	</dl>\n</div>\n\n");
+  return buffer;
+  
+});
+
+Ember.TEMPLATES['users/new'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+
+
+  data.buffer.push("<div class=\"panel panel-primary\">\n	");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.partial || depth0.partial),stack1 ? stack1.call(depth0, "users/_form", options) : helperMissing.call(depth0, "partial", "users/_form", options))));
+  data.buffer.push("\n	<div class=\"panel-footer clearfix\">\n		<button ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "save", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(" class=\"btn btn-primary pull-right\">Save</button>\n		<button ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "cancel", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(" class=\"btn btn-default\">Cancel</button>\n	</div>\n</div>\n\n");
   return buffer;
   
 });
@@ -761,7 +822,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 
 
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /*!
  * @overview  Ember Data
  * @copyright Copyright 2011-2013 Tilde Inc. and contributors.
@@ -10389,7 +10450,7 @@ Ember.onLoad('Ember.Application', function(Application) {
 
 })();
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 // Version: v1.0.0
 // Last commit: e2ea0cf (2013-08-31 23:47:39 -0700)
 
@@ -46861,7 +46922,7 @@ Ember.State = generateRemovedClass("Ember.State");
 
 })();
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /*
 
 Copyright (C) 2011 by Yehuda Katz
@@ -47225,7 +47286,7 @@ Handlebars.template = Handlebars.VM.template;
 })(Handlebars);
 ;
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v1.9.1
  * http://jquery.com/
@@ -56823,7 +56884,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 }
 
 })( window );
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 /*
  * JavaScript MD5 1.0.1
  * https://github.com/blueimp/JavaScript-MD5
@@ -57099,7 +57160,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
     }
 }(this));
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 var ApplicationView = Ember.View.extend({
 	classNames: ['application']
 });
@@ -57107,7 +57168,7 @@ var ApplicationView = Ember.View.extend({
 module.exports = ApplicationView;
 
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 Ember.TextField.reopen({
 	attributeBindings: ['autofocus']
 });
